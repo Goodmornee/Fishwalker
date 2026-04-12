@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Entity">
+      <UniqueIdentifier>{e1c5b97b-8ddb-43db-b202-544204d464aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Item">
+      <UniqueIdentifier>{545e7895-5f9c-4381-ae0e-6393536eca89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Locations">
+      <UniqueIdentifier>{4b53a5dd-70ec-48a4-ad6e-6cb17c4d81ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\GameStates">
+      <UniqueIdentifier>{5348709a-c112-4d24-96d9-6a1913ea27b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Equipment">
+      <UniqueIdentifier>{b8b50627-6c5f-46c8-9626-d464c0bdc10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Battle">
+      <UniqueIdentifier>{708dc837-8fcc-4a79-9b68-5d62e35c7ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Entity\Character">
+      <UniqueIdentifier>{b82714a6-39b1-4fe5-82f2-c4d73cc17d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Entity\Character\Hero">
+      <UniqueIdentifier>{8f5b01b1-57b1-4057-933c-31cce4d32c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Entity\Character\Monster">
+      <UniqueIdentifier>{19b643b4-f043-4230-b3bb-06268ce66b15}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Исходные файлы\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="character.cpp">
+      <Filter>Исходные файлы\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="hero.cpp">
+      <Filter>Исходные файлы\Entity\Character\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="monster.cpp">
+      <Filter>Исходные файлы\Entity\Character\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="equipment.cpp">
+      <Filter>Исходные файлы\Equipment</Filter>
+    </ClCompile>
+    <ClCompile Include="battle.cpp">
+      <Filter>Исходные файлы\Battle</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="entity.h">
+      <Filter>Исходные файлы\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="character.h">
+      <Filter>Исходные файлы\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="hero.h">
+      <Filter>Исходные файлы\Entity\Character\Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="monster.h">
+      <Filter>Исходные файлы\Entity\Character\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="equipment.h">
+      <Filter>Исходные файлы\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="battle.h">
+      <Filter>Исходные файлы\Battle</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
