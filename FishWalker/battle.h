@@ -24,6 +24,9 @@ class Battle {
   std::vector<Monster*> enemies;
 
   // функции
+  void displayAliveEnemies();
+  void monstersTurn();
+  void heroTurn();
 };
 
 #endif  // BATTLE_H

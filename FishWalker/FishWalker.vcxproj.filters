@@ -13,37 +13,34 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Исходные файлы\Entity">
-      <UniqueIdentifier>{e1c5b97b-8ddb-43db-b202-544204d464aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\Item">
-      <UniqueIdentifier>{545e7895-5f9c-4381-ae0e-6393536eca89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\Locations">
-      <UniqueIdentifier>{4b53a5dd-70ec-48a4-ad6e-6cb17c4d81ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\GameStates">
-      <UniqueIdentifier>{5348709a-c112-4d24-96d9-6a1913ea27b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\Equipment">
-      <UniqueIdentifier>{b8b50627-6c5f-46c8-9626-d464c0bdc10e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\Battle">
-      <UniqueIdentifier>{708dc837-8fcc-4a79-9b68-5d62e35c7ad1}</UniqueIdentifier>
+      <UniqueIdentifier>{cb53991e-454b-42f0-ae86-5d40b4fe10db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Entity">
+      <UniqueIdentifier>{3223cd3f-9dcf-4a7b-b132-92d137e2f0aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\Entity\Character">
-      <UniqueIdentifier>{b82714a6-39b1-4fe5-82f2-c4d73cc17d51}</UniqueIdentifier>
+      <UniqueIdentifier>{23416f2c-b10a-4aeb-b8ab-9a48535e1323}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\Entity\Character\Hero">
-      <UniqueIdentifier>{8f5b01b1-57b1-4057-933c-31cce4d32c06}</UniqueIdentifier>
+      <UniqueIdentifier>{b46026ca-98bd-4d83-b42b-448852ce50b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\Entity\Character\Monster">
-      <UniqueIdentifier>{19b643b4-f043-4230-b3bb-06268ce66b15}</UniqueIdentifier>
+      <UniqueIdentifier>{b304c4a9-34bc-4f9e-bef7-82b9d1d04ee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Equipment">
+      <UniqueIdentifier>{91c39f33-6a06-4d07-9db8-73b25e4de749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Game">
+      <UniqueIdentifier>{9ce389dc-f903-4ad7-8f09-56be04ca585d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="battle.cpp">
+      <Filter>Исходные файлы\Battle</Filter>
     </ClCompile>
     <ClCompile Include="entity.cpp">
       <Filter>Исходные файлы\Entity</Filter>
@@ -60,11 +57,14 @@
     <ClCompile Include="equipment.cpp">
       <Filter>Исходные файлы\Equipment</Filter>
     </ClCompile>
-    <ClCompile Include="battle.cpp">
-      <Filter>Исходные файлы\Battle</Filter>
+    <ClCompile Include="game.cpp">
+      <Filter>Исходные файлы\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="battle.h">
+      <Filter>Исходные файлы\Battle</Filter>
+    </ClInclude>
     <ClInclude Include="entity.h">
       <Filter>Исходные файлы\Entity</Filter>
     </ClInclude>
@@ -80,8 +80,8 @@
     <ClInclude Include="equipment.h">
       <Filter>Исходные файлы\Equipment</Filter>
     </ClInclude>
-    <ClInclude Include="battle.h">
-      <Filter>Исходные файлы\Battle</Filter>
+    <ClInclude Include="game.h">
+      <Filter>Исходные файлы\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

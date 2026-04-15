@@ -1,7 +1,7 @@
 #include "character.h"
 
 // конструктор
-Character::Character(const std::string& name, int id, int hp, int max_hp,
+Character::Character(const std::string& name, int id, int hp, int maxHp,
                      int atk, int acc, int agl, int res, int inf, int crit)
     : Entity(name, id),
       hp(hp),
