@@ -2,17 +2,16 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include <memory>
 
 #include "battle.h"
-#include "equipment.h"
+#include "battleUI.h"
 #include "hero.h"
 #include "monster.h"
 
 class Game {
  public:
-  Game(int heroX, int heroY, int monsterX, int monsterY, int cellSize,
-       int mapWidth, int mapHeight);
+  Game();
   void run();
 
  private:
@@ -21,18 +20,22 @@ class Game {
   void render();
 
   sf::RenderWindow window;
-  int map[12][16];
-  int heroX;
-  int heroY;
-  int monsterX;
-  int monsterY;
+  static const int MAP_HEIGHT = 12;
+  static const int MAP_WIDTH = 16;
+  static const int CELL_SIZE = 50;
 
-  int cellSize;
-  int mapWidth;
-  int mapHeight;
+  int map[MAP_HEIGHT][MAP_WIDTH];
+  int heroX, heroY;
+  int monsterX, monsterY;
+  bool monsterAlive;
 
   Hero hero;
   Monster monster;
+
+  // Для боя
+  bool inBattle;
+  std::unique_ptr<Battle> currentBattle;
+  BattleUI battleUI;
 };
 
-#endif  // GAME_H
+#endif

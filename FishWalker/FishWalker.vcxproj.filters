@@ -34,6 +34,18 @@
     <Filter Include="Исходные файлы\Game">
       <UniqueIdentifier>{9ce389dc-f903-4ad7-8f09-56be04ca585d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Battle\BattleUI">
+      <UniqueIdentifier>{75561f3c-19b2-409f-be7e-3abd2d894105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Inventory">
+      <UniqueIdentifier>{189516c5-99f6-4e88-a827-1e4cf462fc53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Item">
+      <UniqueIdentifier>{28306657-bf5a-4645-a992-d9abd8a32908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Armor">
+      <UniqueIdentifier>{ecf600c6-6b8e-4725-a30d-15e45ef10802}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,6 +72,18 @@
     <ClCompile Include="game.cpp">
       <Filter>Исходные файлы\Game</Filter>
     </ClCompile>
+    <ClCompile Include="battleUI.cpp">
+      <Filter>Исходные файлы\Battle\BattleUI</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.cpp">
+      <Filter>Исходные файлы\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>Исходные файлы\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="armor.cpp">
+      <Filter>Исходные файлы\Armor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battle.h">
@@ -82,6 +106,18 @@
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Исходные файлы\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="battleUI.h">
+      <Filter>Исходные файлы\Battle\BattleUI</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Исходные файлы\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>Исходные файлы\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="armor.h">
+      <Filter>Исходные файлы\Armor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
