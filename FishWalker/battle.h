@@ -16,6 +16,11 @@ class Battle {
   bool isBattleOver() const;
   int countAliveEnemies() const;
 
+  Hero& getHero();
+  Monster& getMonster();
+  void heroAttack();
+  bool isHeroAlive() const;
+
   // деструктор
   ~Battle();
 

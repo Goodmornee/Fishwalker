@@ -1,0 +1,110 @@
+#include "battleUI.h"
+
+#include <iostream>
+
+BattleUI::BattleUI()
+    : currentBattle(nullptr), battleFinished(false), showResult(false) {}
+
+void BattleUI::init(sf::RenderWindow& window, Battle& battle) {
+  currentBattle = &battle;
+
+  // Загружаем шрифт
+  if (!font.openFromFile("arial.ttf")) {
+    std::cerr << "Warning: Could not load arial.ttf" << std::endl;
+  }
+
+  // Создаём тексты через make_unique
+  heroHpText = std::make_unique<sf::Text>(font);
+  heroHpText->setCharacterSize(24);
+  heroHpText->setFillColor(sf::Color::White);
+  heroHpText->setPosition(sf::Vector2f(50.f, 50.f));
+
+  monsterHpText = std::make_unique<sf::Text>(font);
+  monsterHpText->setCharacterSize(24);
+  monsterHpText->setFillColor(sf::Color::White);
+  monsterHpText->setPosition(sf::Vector2f(500.f, 50.f));
+
+  actionMenuText = std::make_unique<sf::Text>(font);
+  actionMenuText->setCharacterSize(20);
+  actionMenuText->setFillColor(sf::Color::Yellow);
+  actionMenuText->setString("1 - Атака\n2 - Предмет (не готово)");
+  actionMenuText->setPosition(sf::Vector2f(300.f, 450.f));
+
+  resultText = std::make_unique<sf::Text>(font);
+  resultText->setCharacterSize(30);
+  resultText->setFillColor(sf::Color::Red);
+  resultText->setPosition(sf::Vector2f(300.f, 250.f));
+
+  backgroundOverlay.setSize(
+      sf::Vector2f(window.getSize().x, window.getSize().y));
+  backgroundOverlay.setFillColor(sf::Color(0, 0, 0, 180));
+}
+
+void BattleUI::updateBarsAndText() {
+  if (!currentBattle) return;
+
+  Hero& hero = currentBattle->getHero();
+  Monster& monster = currentBattle->getMonster();
+
+  heroHpText->setString("Hero HP: " + std::to_string(hero.getHp()) + "/" +
+                        std::to_string(hero.getMaxHp()));
+  monsterHpText->setString("Monster HP: " + std::to_string(monster.getHp()) +
+                           "/" + std::to_string(monster.getMaxHp()));
+
+  float heroPercent = static_cast<float>(hero.getHp()) / hero.getMaxHp();
+  float monsterPercent =
+      static_cast<float>(monster.getHp()) / monster.getMaxHp();
+
+  heroHpBar.setSize(sf::Vector2f(200.f * heroPercent, 20.f));
+  heroHpBar.setFillColor(sf::Color::Green);
+  heroHpBar.setPosition(sf::Vector2f(50.f, 80.f));
+
+  monsterHpBar.setSize(sf::Vector2f(200.f * monsterPercent, 20.f));
+  monsterHpBar.setFillColor(sf::Color::Red);
+  monsterHpBar.setPosition(sf::Vector2f(500.f, 80.f));
+}
+
+void BattleUI::handleEvent(const sf::Event& event) {
+  if (battleFinished) {
+    if (event.is<sf::Event::KeyPressed>()) {
+      battleFinished = false;
+      showResult = false;
+    }
+    return;
+  }
+
+  if (event.is<sf::Event::KeyPressed>()) {
+    const auto* key = event.getIf<sf::Event::KeyPressed>();
+    if (key->scancode == sf::Keyboard::Scancode::Num1) {
+      currentBattle->heroAttack();
+      updateBarsAndText();
+      if (currentBattle->isBattleOver()) {
+        showResult = true;
+        if (currentBattle->isHeroAlive())
+          resultText->setString("ПОБЕДА!\nНажмите любую клавишу");
+        else
+          resultText->setString("ПОРАЖЕНИЕ...\nНажмите любую клавишу");
+        battleFinished = true;
+      }
+    }
+  }
+}
+
+void BattleUI::update() {
+  if (!currentBattle) return;
+  updateBarsAndText();
+}
+
+void BattleUI::render(sf::RenderWindow& window) {
+  window.draw(backgroundOverlay);
+  window.draw(*heroHpText);
+  window.draw(*monsterHpText);
+  window.draw(heroHpBar);
+  window.draw(monsterHpBar);
+  window.draw(*actionMenuText);
+  if (showResult) {
+    window.draw(*resultText);
+  }
+}
+
+bool BattleUI::isFinished() const { return battleFinished; }

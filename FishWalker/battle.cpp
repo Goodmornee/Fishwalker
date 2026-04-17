@@ -105,5 +105,33 @@ void Battle::heroTurn() {
   }
 }
 
+Hero& Battle::getHero() { return *hero; }
+
+Monster& Battle::getMonster() {
+  // Предполагаем, что бой с одним монстром (первый в векторе)
+  return *enemies[0];
+}
+
+void Battle::heroAttack() {
+  if (isBattleOver()) return;
+  // Находим первого живого монстра (должен быть один)
+  Monster* target = nullptr;
+  for (auto* m : enemies) {
+    if (m->isAlive()) {
+      target = m;
+      break;
+    }
+  }
+  if (target) {
+    hero->attack(*target);           // герой атакует
+    if (!target->isAlive()) return;  // монстр умер – бой закончится
+    if (hero->isAlive()) {
+      target->attack(*hero);  // монстр отвечает
+    }
+  }
+}
+
+bool Battle::isHeroAlive() const { return hero->isAlive(); }
+
 // деструктор
 Battle::~Battle() {}

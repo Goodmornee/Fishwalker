@@ -3,12 +3,13 @@
 
 #include "battle.h"
 #include "equipment.h"
+#include "game.h"
 #include "hero.h"
 #include "monster.h"
 
 int main() {
   setlocale(LC_ALL, "rus");
-  Hero hero("Рыбак", 1, 100, 100, 10, 50, 20, 10, 0, 5, nullptr);
+  /*Hero hero("Рыбак", 1, 100, 100, 10, 50, 20, 10, 0, 5, nullptr);
   Monster monster("Фишвокер", 1, 20, 100, 10, 50, 20, 10, 0, 5);
   std::vector<Monster*> monsters;
   monsters.push_back(&monster);
@@ -19,7 +20,11 @@ int main() {
   hero.equip(&rod);
   std::cout << "Оружие после: " << hero.getCurrentWeapon()->getWeaponName()
             << std::endl;
-  std::cout << "countAliveEnemies: " << battle.countAliveEnemies() << std::endl;
+  std::cout << "countAliveEnemies: " << battle.countAliveEnemies() <<
+  std::endl;*/
+  Game game;
+  game.run();
+  return 0;
 
   return 0;
 }

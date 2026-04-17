@@ -1,0 +1,17 @@
+#ifndef INVENTORY_H
+#define INVENTORY_H
+
+#include <iostream>
+
+class Invenntory {
+ public:
+  void addItem(const Item& item);
+  void removeItem(int index);
+  bool useItem(int index, Hero& hero);
+  void listItems() const;
+
+ private:
+  std::vector<Item> items;
+};
+
+#endif  // INVENTORY_H
