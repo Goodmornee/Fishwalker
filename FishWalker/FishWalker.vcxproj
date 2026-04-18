@@ -145,6 +145,9 @@
     <ClCompile Include="character.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="equipment.cpp" />
+    <ClCompile Include="itemFactory.cpp" />
+    <ClCompile Include="monsterFactory.cpp" />
+    <ClCompile Include="weapon.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="inventory.cpp" />
@@ -157,8 +160,12 @@
     <ClInclude Include="battle.h" />
     <ClInclude Include="battleUI.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="constants.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="equipment.h" />
+    <ClInclude Include="itemFactory.h" />
+    <ClInclude Include="monsterFactory.h" />
+    <ClInclude Include="weapon.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="hero.h" />
     <ClInclude Include="inventory.h" />

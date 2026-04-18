@@ -2,10 +2,10 @@
 #include <iostream>
 
 #include "battle.h"
-#include "equipment.h"
 #include "game.h"
 #include "hero.h"
 #include "monster.h"
+#include "weapon.h"
 
 int main() {
   setlocale(LC_ALL, "rus");

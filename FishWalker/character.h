@@ -26,7 +26,7 @@ class Character : public Entity {
 
   // функции
   bool isAlive() const;
-  void takeDamage(int amount_damage);
+  virtual void takeDamage(int amount_damage);
   void heal(int amount_hp);
   void takeInfection(int amount_infection);
 
