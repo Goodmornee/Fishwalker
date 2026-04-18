@@ -13,7 +13,7 @@ Hero::Hero(const std::string& name, int id, int hp, int maxHp, int atk, int acc,
 // геттеры
 Weapon* Hero::getCurrentWeapon() const { return currentWeapon; }
 Inventory& Hero::getInventory() { return inventory; }
-Armor* Hero::getCurrentArmor() { return currentArmor; }
+Armor* Hero::getCurrentArmor() const { return currentArmor; }
 
 // функции
 void Hero::takeDamage(int amount) {
@@ -26,7 +26,7 @@ void Hero::attack(Character& target) {
   target.takeDamage(damage);
 }
 
-void Hero::equipEquipment(Weapon* newWeapon) {
+void Hero::equipWeapon(Weapon* newWeapon) {
   if (currentWeapon != nullptr) delete currentWeapon;
   currentWeapon = newWeapon;
 }

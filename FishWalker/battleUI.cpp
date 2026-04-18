@@ -2,35 +2,44 @@
 
 #include <iostream>
 
+static bool fontLoaded = false;
+static sf::Font sharedFont;
+
 BattleUI::BattleUI()
     : currentBattle(nullptr), battleFinished(false), showResult(false) {}
 
 void BattleUI::init(sf::RenderWindow& window, Battle& battle) {
   currentBattle = &battle;
+  battleFinished = false;
+  showResult = false;
 
-  // Загружаем шрифт
-  if (!font.openFromFile("arial.ttf")) {
-    std::cerr << "Warning: Could not load arial.ttf" << std::endl;
+  // Загружаем шрифт только один раз
+  if (!fontLoaded) {
+    if (!sharedFont.openFromFile("arial.ttf")) {
+      std::cerr << "Error: Cannot load arial.ttf in BattleUI" << std::endl;
+      return;
+    }
+    fontLoaded = true;
   }
 
-  // Создаём тексты через make_unique
-  heroHpText = std::make_unique<sf::Text>(font);
+  // Создаём тексты (уникальные указатели, старые автоматически удалятся)
+  heroHpText = std::make_unique<sf::Text>(sharedFont);
   heroHpText->setCharacterSize(24);
   heroHpText->setFillColor(sf::Color::White);
   heroHpText->setPosition(sf::Vector2f(50.f, 50.f));
 
-  monsterHpText = std::make_unique<sf::Text>(font);
+  monsterHpText = std::make_unique<sf::Text>(sharedFont);
   monsterHpText->setCharacterSize(24);
   monsterHpText->setFillColor(sf::Color::White);
   monsterHpText->setPosition(sf::Vector2f(500.f, 50.f));
 
-  actionMenuText = std::make_unique<sf::Text>(font);
+  actionMenuText = std::make_unique<sf::Text>(sharedFont);
   actionMenuText->setCharacterSize(20);
   actionMenuText->setFillColor(sf::Color::Yellow);
   actionMenuText->setString("1 - Attack\n2 - Item (not ready)");
   actionMenuText->setPosition(sf::Vector2f(300.f, 450.f));
 
-  resultText = std::make_unique<sf::Text>(font);
+  resultText = std::make_unique<sf::Text>(sharedFont);
   resultText->setCharacterSize(30);
   resultText->setFillColor(sf::Color::Red);
   resultText->setPosition(sf::Vector2f(300.f, 250.f));
@@ -97,14 +106,12 @@ void BattleUI::update() {
 
 void BattleUI::render(sf::RenderWindow& window) {
   window.draw(backgroundOverlay);
-  window.draw(*heroHpText);
-  window.draw(*monsterHpText);
+  if (heroHpText) window.draw(*heroHpText);
+  if (monsterHpText) window.draw(*monsterHpText);
   window.draw(heroHpBar);
   window.draw(monsterHpBar);
-  window.draw(*actionMenuText);
-  if (showResult) {
-    window.draw(*resultText);
-  }
+  if (actionMenuText) window.draw(*actionMenuText);
+  if (showResult && resultText) window.draw(*resultText);
 }
 
 bool BattleUI::isFinished() const { return battleFinished; }

@@ -17,14 +17,14 @@ class Hero : public Character {
 
   // геттеры
   Weapon* getCurrentWeapon() const;
+  Armor* getCurrentArmor() const;
   Inventory& getInventory();
-  Armor* getCurrentArmor();
 
   // функци
   void takeDamage(int amount) override;
   void attack(Character& target) override;
 
-  void equipEquipment(Weapon* newWeapon);
+  void equipWeapon(Weapon* newWeapon);
   void equipArmor(Armor* newArmor);
 
   void update() override;
