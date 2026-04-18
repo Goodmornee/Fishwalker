@@ -10,9 +10,13 @@ Game::Game()
       monsterX(5),
       monsterY(5),
       monsterAlive(true),
-      hero("Рыбак", 1, 100, 100, 10, 50, 20, 10, 0, 5, nullptr),
-      monster("Фишвокер", 1, 20, 100, 10, 50, 20, 10, 0, 5),
-      inBattle(false) {
+      hero("Fisherman", 1, 100, 100, 10, 50, 20, 10, 0, 5, nullptr),
+      monster("Fishwalker", 1, 20, 100, 10, 50, 20, 10, 0, 5),
+      inBattle(false),
+      itemExists(true),
+      itemX(3),
+      itemY(3),
+      currentItem("Fish", ItemType::HEAL, 20) {
   window.setFramerateLimit(60);
 
   // Заполняем карту полом (0)

@@ -28,11 +28,13 @@ class Game {
   int heroX, heroY;
   int monsterX, monsterY;
   bool monsterAlive;
+  bool itemExists;
+  int itemX, itemY;
 
+  Item currentItem;
   Hero hero;
   Monster monster;
 
-  // Для боя
   bool inBattle;
   std::unique_ptr<Battle> currentBattle;
   BattleUI battleUI;

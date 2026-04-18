@@ -2,9 +2,16 @@
 #define INVENTORY_H
 
 #include <iostream>
+#include <vector>
 
-class Invenntory {
+#include "item.h"
+
+class Hero;
+
+class Inventory {
  public:
+  Inventory();
+
   void addItem(const Item& item);
   void removeItem(int index);
   bool useItem(int index, Hero& hero);

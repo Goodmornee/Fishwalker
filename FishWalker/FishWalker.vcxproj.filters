@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Исходные файлы\Battle">
-      <UniqueIdentifier>{cb53991e-454b-42f0-ae86-5d40b4fe10db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\Entity">
       <UniqueIdentifier>{3223cd3f-9dcf-4a7b-b132-92d137e2f0aa}</UniqueIdentifier>
     </Filter>
@@ -28,23 +25,35 @@
     <Filter Include="Исходные файлы\Entity\Character\Monster">
       <UniqueIdentifier>{b304c4a9-34bc-4f9e-bef7-82b9d1d04ee7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\Equipment">
-      <UniqueIdentifier>{91c39f33-6a06-4d07-9db8-73b25e4de749}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\Game">
       <UniqueIdentifier>{9ce389dc-f903-4ad7-8f09-56be04ca585d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\Battle\BattleUI">
-      <UniqueIdentifier>{75561f3c-19b2-409f-be7e-3abd2d894105}</UniqueIdentifier>
     </Filter>
     <Filter Include="Исходные файлы\Inventory">
       <UniqueIdentifier>{189516c5-99f6-4e88-a827-1e4cf462fc53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\Item">
+    <Filter Include="Исходные файлы\Equipment">
+      <UniqueIdentifier>{0880ada0-1d6b-4cb6-a06f-8f545c5ff30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Equipment\Armor">
+      <UniqueIdentifier>{ecf600c6-6b8e-4725-a30d-15e45ef10802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Equipment\Weapon">
+      <UniqueIdentifier>{91c39f33-6a06-4d07-9db8-73b25e4de749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Equipment\Item">
       <UniqueIdentifier>{28306657-bf5a-4645-a992-d9abd8a32908}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\Armor">
-      <UniqueIdentifier>{ecf600c6-6b8e-4725-a30d-15e45ef10802}</UniqueIdentifier>
+    <Filter Include="Исходные файлы\Battle">
+      <UniqueIdentifier>{cb53991e-454b-42f0-ae86-5d40b4fe10db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Battle\BattleUI">
+      <UniqueIdentifier>{75561f3c-19b2-409f-be7e-3abd2d894105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\ItemFactory">
+      <UniqueIdentifier>{0ba5c19c-de91-4a71-9b0b-1e89dadb110d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\MonsterFactory">
+      <UniqueIdentifier>{b53078d8-9ca8-4ec2-9856-e544fa05d6cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,8 +75,8 @@
     <ClCompile Include="monster.cpp">
       <Filter>Исходные файлы\Entity\Character\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="equipment.cpp">
-      <Filter>Исходные файлы\Equipment</Filter>
+    <ClCompile Include="weapon.cpp">
+      <Filter>Исходные файлы\Equipment\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>Исходные файлы\Game</Filter>
@@ -79,10 +88,19 @@
       <Filter>Исходные файлы\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="item.cpp">
-      <Filter>Исходные файлы\Item</Filter>
+      <Filter>Исходные файлы\Equipment\Item</Filter>
     </ClCompile>
     <ClCompile Include="armor.cpp">
-      <Filter>Исходные файлы\Armor</Filter>
+      <Filter>Исходные файлы\Equipment\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="equipment.cpp">
+      <Filter>Исходные файлы\Equipment</Filter>
+    </ClCompile>
+    <ClCompile Include="itemFactory.cpp">
+      <Filter>Исходные файлы\ItemFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="monsterFactory.cpp">
+      <Filter>Исходные файлы\MonsterFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,8 +119,8 @@
     <ClInclude Include="monster.h">
       <Filter>Исходные файлы\Entity\Character\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="equipment.h">
-      <Filter>Исходные файлы\Equipment</Filter>
+    <ClInclude Include="weapon.h">
+      <Filter>Исходные файлы\Equipment\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Исходные файлы\Game</Filter>
@@ -114,10 +132,22 @@
       <Filter>Исходные файлы\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
-      <Filter>Исходные файлы\Item</Filter>
+      <Filter>Исходные файлы\Equipment\Item</Filter>
     </ClInclude>
     <ClInclude Include="armor.h">
-      <Filter>Исходные файлы\Armor</Filter>
+      <Filter>Исходные файлы\Equipment\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="equipment.h">
+      <Filter>Исходные файлы\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="itemFactory.h">
+      <Filter>Исходные файлы\ItemFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="monsterFactory.h">
+      <Filter>Исходные файлы\MonsterFactory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

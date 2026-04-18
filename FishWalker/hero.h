@@ -3,22 +3,29 @@
 
 #include <string>
 
+#include "armor.h"
 #include "character.h"
-#include "equipment.h"
+#include "inventory.h"
+#include "weapon.h"
 
 class Hero : public Character {
  public:
   // конструктор
   Hero(const std::string& name, int id, int hp, int maxHp, int atk, int acc,
-       int agl, int res, int inf, int crit, Equipment* currentWeapon = nullptr);
+       int agl, int res, int inf, int crit, Weapon* currentWeapon = nullptr,
+       Armor* currentArmor = nullptr);
 
   // геттеры
-  Equipment* getCurrentWeapon() const;
+  Weapon* getCurrentWeapon() const;
+  Inventory& getInventory();
+  Armor* getCurrentArmor();
 
   // функци
+  void takeDamage(int amount) override;
   void attack(Character& target) override;
 
-  void equip(Equipment* newWeapon);
+  void equipEquipment(Weapon* newWeapon);
+  void equipArmor(Armor* newArmor);
 
   void update() override;
 
@@ -26,7 +33,11 @@ class Hero : public Character {
   ~Hero();
 
  private:
-  Equipment* currentWeapon;
+  Weapon* currentWeapon;
+
+  Inventory inventory;
+
+  Armor* currentArmor;
 };
 
 #endif  // HERO_H

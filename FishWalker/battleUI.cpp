@@ -27,7 +27,7 @@ void BattleUI::init(sf::RenderWindow& window, Battle& battle) {
   actionMenuText = std::make_unique<sf::Text>(font);
   actionMenuText->setCharacterSize(20);
   actionMenuText->setFillColor(sf::Color::Yellow);
-  actionMenuText->setString("1 - Атака\n2 - Предмет (не готово)");
+  actionMenuText->setString("1 - Attack\n2 - Item (not ready)");
   actionMenuText->setPosition(sf::Vector2f(300.f, 450.f));
 
   resultText = std::make_unique<sf::Text>(font);
@@ -81,9 +81,9 @@ void BattleUI::handleEvent(const sf::Event& event) {
       if (currentBattle->isBattleOver()) {
         showResult = true;
         if (currentBattle->isHeroAlive())
-          resultText->setString("ПОБЕДА!\nНажмите любую клавишу");
+          resultText->setString("VICTORY!\nPress any key");
         else
-          resultText->setString("ПОРАЖЕНИЕ...\nНажмите любую клавишу");
+          resultText->setString("DEFEAT...\nPress any key");
         battleFinished = true;
       }
     }

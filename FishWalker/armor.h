@@ -1,9 +1,29 @@
 #ifndef ARMOR_H
 #define ARMOR_H
 
+#include <string>
+
 class Armor {
  public:
- private:
+  // конструктор
+  Armor(const std::string& armorName, int armorDef, int armorType);
+
+  // геттеры
+  const std::string& getArmorName() const;
+  int getArmorDef() const;
+  int getArmorType() const;
+
+  // деструктор
+  virtual ~Armor();
+
+ protected:
+  std::string armorName;
+  int armorDef, armorType;
+
+  // сеттеры
+  void setArmorName(const std::string& newArmorName);
+  void setArmorDef(int newArmorDef);
+  void setArmorType(int newArmorType);
 };
 
 #endif  // ARMOR_H
