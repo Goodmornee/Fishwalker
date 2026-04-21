@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum class ItemType { HEAL, WEAPON, ARMOR };
+enum class ItemType { HEAL, WEAPON, ARMOR, ANTIDOTE };
 
 class Item {
  public:

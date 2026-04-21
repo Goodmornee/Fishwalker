@@ -21,6 +21,10 @@ bool Inventory::useItem(int index, Hero& hero) {
     hero.heal(item.getValue());
     removeItem(index);
     return true;
+  } else if (item.getType() == ItemType::ANTIDOTE) {
+    hero.takeInfection(-item.getValue());
+    removeItem(index);
+    return true;
   } else if (item.getType() == ItemType::WEAPON) {
     Weapon* newWeapon = new Weapon(item.getName(), item.getValue(), 0);
     hero.equipWeapon(newWeapon);

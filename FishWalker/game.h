@@ -25,6 +25,7 @@ struct MonsterInfo {
   Monster* ptr;
   int x, y;
   bool alive;
+  float moveTimer;
 };
 
 class Game {
@@ -35,10 +36,15 @@ class Game {
 
  private:
   void processInput();
-  void update();
+  void update(float deltaTime);
   void render();
+  void moveMonsters(float deltaTime);
+  void openInventoryOnMap();
+  Item createUniqueItem();
+  void showGameOverScreen();  // новый метод
 
   sf::RenderWindow window;
+  sf::View camera;
   int map[MAP_HEIGHT][MAP_WIDTH];
   int heroX, heroY;
 
@@ -52,6 +58,19 @@ class Game {
 
   MonsterFactory monsterFactory;
   ItemFactory itemFactory;
+
+  sf::Clock clock;
+  float lastFrameTime;
+
+  bool showMapInventory;
+  int selectedMapItemIndex;
+  std::unique_ptr<sf::Text> mapInventoryText;
+
+  bool knifeFound;
+  bool armorFound;
+
+  bool gameOver;      // флаг окончания игры
+  bool showGameOver;  // показывать ли экран смерти
 };
 
 #endif

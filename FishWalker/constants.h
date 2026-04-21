@@ -2,8 +2,8 @@
 #define CONSTANTS_H
 
 #define CELL_SIZE 50
-#define MAP_WIDTH 16
-#define MAP_HEIGHT 12
+#define MAP_WIDTH 30
+#define MAP_HEIGHT 20
 
 #define HERO_START_HP 100
 #define HERO_MAX_HP 100
@@ -27,5 +27,7 @@
 #define ANTIDOTE_AMOUNT 30
 #define ARMOR_DEF 5
 #define WEAPON_DAMAGE 15
+
+#define CAMERA_SPEED 0.1f
 
 #endif

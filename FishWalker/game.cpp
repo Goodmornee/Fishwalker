@@ -7,17 +7,26 @@
 Game::Game()
     : window(sf::VideoMode({MAP_WIDTH * CELL_SIZE, MAP_HEIGHT * CELL_SIZE}),
              "Fishwalker"),
-      heroX(1),
-      heroY(1),
+      heroX(MAP_WIDTH / 2),
+      heroY(MAP_HEIGHT / 2),
       hero("Fisherman", 1, HERO_START_HP, HERO_MAX_HP, HERO_ATK, HERO_ACC,
            HERO_AGL, HERO_RES, HERO_INF, HERO_CRIT, nullptr, nullptr),
-      inBattle(false) {
+      inBattle(false),
+      lastFrameTime(0.f),
+      showMapInventory(false),
+      selectedMapItemIndex(0),
+      knifeFound(false),
+      armorFound(false),
+      gameOver(false),
+      showGameOver(false) {
   window.setFramerateLimit(60);
   std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-  // Карта
+  // 1. Заполняем карту полом (0)
   for (int y = 0; y < MAP_HEIGHT; ++y)
     for (int x = 0; x < MAP_WIDTH; ++x) map[y][x] = 0;
+
+  // 2. Стены по краям
   for (int x = 0; x < MAP_WIDTH; ++x) {
     map[0][x] = 1;
     map[MAP_HEIGHT - 1][x] = 1;
@@ -27,45 +36,172 @@ Game::Game()
     map[y][MAP_WIDTH - 1] = 1;
   }
 
-  // Монстры
-  monsters.push_back({monsterFactory.createNormalMonster(), 5, 5, true});
-  monsters.push_back({monsterFactory.createInfectedMonster(), 8, 8, true});
-
-  // Отладка
-  for (const auto& m : monsters) {
-    std::cout << "Monster " << m.ptr->getName() << " HP = " << m.ptr->getHp()
-              << std::endl;
+  // 3. Внутренние стены (лабиринт) – не перекрывать возможные сундуки, сначала
+  // стены
+  for (int i = 0; i < 30; ++i) {
+    int x = rand() % (MAP_WIDTH - 2) + 1;
+    int y = rand() % (MAP_HEIGHT - 2) + 1;
+    map[y][x] = 1;
   }
 
-  // Сундуки
-  boxes.push_back({3, 3, true, itemFactory.createItem()});
-  boxes.push_back({10, 5, true, itemFactory.createItem()});
+  // 4. Размещаем монстров (только на свободных клетках, не стенах и не на
+  // сундуках)
+  std::vector<std::pair<int, int>> freeCells;
+  for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+    for (int x = 1; x < MAP_WIDTH - 1; ++x)
+      if (map[y][x] == 0 && !(x == heroX && y == heroY))
+        freeCells.push_back({x, y});
+
+  // Монстры
+  for (int i = 0; i < 4 && i < (int)freeCells.size(); ++i) {
+    int idx = rand() % freeCells.size();
+    int mx = freeCells[idx].first, my = freeCells[idx].second;
+    Monster* m = (rand() % 2 == 0) ? monsterFactory.createNormalMonster()
+                                   : monsterFactory.createInfectedMonster();
+    monsters.push_back({m, mx, my, true, 0.f});
+    // Удаляем эту клетку из списка свободных, чтобы не ставить сундук туда же
+    freeCells.erase(freeCells.begin() + idx);
+  }
+
+  // 5. Размещаем сундуки (на оставшихся свободных клетках)
+  for (int i = 0; i < 3 && i < (int)freeCells.size(); ++i) {
+    int idx = rand() % freeCells.size();
+    int bx = freeCells[idx].first, by = freeCells[idx].second;
+    boxes.push_back({bx, by, true, createUniqueItem()});
+    freeCells.erase(freeCells.begin() + idx);
+  }
+
+  // 6. Герой начинается с центра (но если там стена – ищем первую свободную)
+  if (map[heroY][heroX] == 1) {
+    for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+      for (int x = 1; x < MAP_WIDTH - 1; ++x)
+        if (map[y][x] == 0) {
+          heroX = x;
+          heroY = y;
+          break;
+        }
+  }
+
+  // Камера
+  camera.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
+  camera.setCenter(sf::Vector2f(heroX * CELL_SIZE, heroY * CELL_SIZE));
+
+  static sf::Font font;
+  if (!font.openFromFile("arial.ttf")) {
+  }
+  mapInventoryText = std::make_unique<sf::Text>(font);
+  mapInventoryText->setCharacterSize(20);
+  mapInventoryText->setFillColor(sf::Color::White);
 }
 
 Game::~Game() {
-  for (auto& m : monsters) {
-    delete m.ptr;
+  for (auto& m : monsters) delete m.ptr;
+}
+
+Item Game::createUniqueItem() {
+  Item loot = itemFactory.createItem();
+  if (loot.getType() == ItemType::WEAPON) {
+    if (knifeFound) {
+      loot = itemFactory.createHealthPotion();
+    } else {
+      knifeFound = true;
+    }
+  } else if (loot.getType() == ItemType::ARMOR) {
+    if (armorFound) {
+      loot = itemFactory.createHealthPotion();
+    } else {
+      armorFound = true;
+    }
   }
+  return loot;
+}
+
+void Game::showGameOverScreen() {
+  showGameOver = true;
+  gameOver = true;
 }
 
 void Game::run() {
   while (window.isOpen()) {
+    float dt = clock.restart().asSeconds();
     processInput();
-    update();
+    if (!gameOver) update(dt);
     render();
   }
 }
 
+void Game::openInventoryOnMap() {
+  showMapInventory = true;
+  selectedMapItemIndex = 0;
+  std::string invStr = "Inventory (press number to use, ESC to close):\n";
+  const auto& items = hero.getInventory().getItems();
+  int i = 1;
+  for (const auto& item : items) {
+    invStr += std::to_string(i) + ". " + item.getName();
+    if (item.getType() == ItemType::HEAL)
+      invStr += " (heal +" + std::to_string(item.getValue()) + " HP)";
+    else if (item.getType() == ItemType::ANTIDOTE)
+      invStr += " (antidote -" + std::to_string(item.getValue()) + " INF)";
+    else if (item.getType() == ItemType::WEAPON)
+      invStr += " (+" + std::to_string(item.getValue()) + " ATK)";
+    else if (item.getType() == ItemType::ARMOR)
+      invStr += " (+" + std::to_string(item.getValue()) + " DEF)";
+    invStr += "\n";
+    i++;
+  }
+  mapInventoryText->setString(invStr);
+  mapInventoryText->setPosition(sf::Vector2f(300.f, 150.f));
+}
+
 void Game::processInput() {
   while (const auto event = window.pollEvent()) {
-    if (event->is<sf::Event::Closed>()) {
-      window.close();
+    if (event->is<sf::Event::Closed>()) window.close();
+
+    if (gameOver && showGameOver) {
+      if (event->is<sf::Event::KeyPressed>()) {
+        window.close();
+      }
+      continue;
     }
 
     if (inBattle) {
       battleUI.handleEvent(*event);
+    } else if (showMapInventory) {
+      if (event->is<sf::Event::KeyPressed>()) {
+        const auto* key = event->getIf<sf::Event::KeyPressed>();
+        int num = -1;
+        if (key->scancode == sf::Keyboard::Scancode::Num1)
+          num = 0;
+        else if (key->scancode == sf::Keyboard::Scancode::Num2)
+          num = 1;
+        else if (key->scancode == sf::Keyboard::Scancode::Num3)
+          num = 2;
+        else if (key->scancode == sf::Keyboard::Scancode::Num4)
+          num = 3;
+        else if (key->scancode == sf::Keyboard::Scancode::Num5)
+          num = 4;
+        else if (key->scancode == sf::Keyboard::Scancode::Num6)
+          num = 5;
+        else if (key->scancode == sf::Keyboard::Scancode::Num7)
+          num = 6;
+        else if (key->scancode == sf::Keyboard::Scancode::Num8)
+          num = 7;
+        else if (key->scancode == sf::Keyboard::Scancode::Num9)
+          num = 8;
+        if (num != -1 && num < (int)hero.getInventory().getItems().size()) {
+          if (hero.getInventory().useItem(num, hero)) {
+            openInventoryOnMap();
+          }
+        } else if (key->scancode == sf::Keyboard::Scancode::Escape) {
+          showMapInventory = false;
+        }
+      }
     } else {
       if (const auto* key = event->getIf<sf::Event::KeyPressed>()) {
+        if (key->scancode == sf::Keyboard::Scancode::I) {
+          openInventoryOnMap();
+          continue;
+        }
         int newX = heroX, newY = heroY;
         if (key->scancode == sf::Keyboard::Scancode::Up) newY--;
         if (key->scancode == sf::Keyboard::Scancode::Down) newY++;
@@ -74,22 +210,17 @@ void Game::processInput() {
 
         if (newX >= 0 && newX < MAP_WIDTH && newY >= 0 && newY < MAP_HEIGHT &&
             map[newY][newX] != 1) {
-          // Сундук
+          // Проверяем сундуки
           for (auto& box : boxes) {
             if (box.active && newX == box.x && newY == box.y) {
               hero.getInventory().addItem(box.loot);
-              std::cout << "Found a box! You got: " << box.loot.getName()
-                        << std::endl;
               box.active = false;
               break;
             }
           }
-          // Монстр
           bool monsterHere = false;
           for (auto& m : monsters) {
             if (m.alive && newX == m.x && newY == m.y) {
-              std::cout << "Starting battle with " << m.ptr->getName()
-                        << " HP=" << m.ptr->getHp() << std::endl;
               currentBattle =
                   std::make_unique<Battle>(&hero, std::vector<Monster*>{m.ptr});
               battleUI.init(window, *currentBattle);
@@ -101,6 +232,11 @@ void Game::processInput() {
           if (!monsterHere) {
             heroX = newX;
             heroY = newY;
+            // DoT при движении
+            hero.applyDot();
+            if (!hero.isAlive()) {
+              showGameOverScreen();
+            }
           }
         }
       }
@@ -108,13 +244,49 @@ void Game::processInput() {
   }
 }
 
-void Game::update() {
+void Game::moveMonsters(float deltaTime) {
+  const float MOVE_INTERVAL = 2.f;
+  for (auto& m : monsters) {
+    if (!m.alive) continue;
+    m.moveTimer += deltaTime;
+    if (m.moveTimer >= MOVE_INTERVAL) {
+      m.moveTimer = 0.f;
+      int dx = 0, dy = 0;
+      int dir = rand() % 4;
+      if (dir == 0)
+        dy = -1;
+      else if (dir == 1)
+        dy = 1;
+      else if (dir == 2)
+        dx = -1;
+      else
+        dx = 1;
+      int newX = m.x + dx;
+      int newY = m.y + dy;
+      if (newX >= 0 && newX < MAP_WIDTH && newY >= 0 && newY < MAP_HEIGHT &&
+          map[newY][newX] != 1) {
+        bool occupied = false;
+        if (newX == heroX && newY == heroY) occupied = true;
+        for (const auto& other : monsters) {
+          if (other.alive && other.x == newX && other.y == newY)
+            occupied = true;
+        }
+        if (!occupied) {
+          m.x = newX;
+          m.y = newY;
+        }
+      }
+    }
+  }
+}
+
+void Game::update(float deltaTime) {
   if (inBattle) {
-    battleUI.update();
+    battleUI.update(deltaTime);
     if (battleUI.isFinished()) {
       inBattle = false;
       if (!hero.isAlive()) {
-        window.close();
+        showGameOverScreen();
       } else {
         Monster* deadMonster = currentBattle->getMonsterPtr();
         for (auto& m : monsters) {
@@ -128,13 +300,46 @@ void Game::update() {
       }
       currentBattle.reset();
     }
+  } else {
+    moveMonsters(deltaTime);
+  }
+
+  if (!gameOver) {
+    float targetX = heroX * CELL_SIZE;
+    float targetY = heroY * CELL_SIZE;
+    sf::Vector2f center = camera.getCenter();
+    center.x += (targetX - center.x) * CAMERA_SPEED;
+    center.y += (targetY - center.y) * CAMERA_SPEED;
+    camera.setCenter(center);
+    window.setView(camera);
   }
 }
 
 void Game::render() {
   window.clear();
 
-  // Карта
+  if (gameOver && showGameOver) {
+    // Экран смерти
+    static sf::Font gameOverFont;
+    static bool fontLoaded = false;
+    if (!fontLoaded) {
+      fontLoaded = gameOverFont.openFromFile("arial.ttf");
+    }
+    if (fontLoaded) {
+      sf::Text text(gameOverFont);
+      text.setCharacterSize(50);
+      text.setFillColor(sf::Color::Red);
+      text.setString("GAME OVER\nPress any key to exit");
+      sf::FloatRect bounds = text.getLocalBounds();
+      text.setPosition(sf::Vector2f((window.getSize().x - bounds.size.x) / 2,
+                                    (window.getSize().y - bounds.size.y) / 2));
+      window.draw(text);
+    }
+    window.display();
+    return;
+  }
+
+  // Отрисовка карты
   for (int y = 0; y < MAP_HEIGHT; ++y) {
     for (int x = 0; x < MAP_WIDTH; ++x) {
       sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
@@ -190,11 +395,25 @@ void Game::render() {
     hudText.setString("HP: " + std::to_string(hero.getHp()) + "/" +
                       std::to_string(hero.getMaxHp()) +
                       "  INF: " + std::to_string(hero.getInf()) + "/100");
+    window.setView(window.getDefaultView());
     window.draw(hudText);
+    window.setView(camera);
+  }
+
+  if (showMapInventory) {
+    window.setView(window.getDefaultView());
+    sf::RectangleShape overlay(
+        sf::Vector2f(window.getSize().x, window.getSize().y));
+    overlay.setFillColor(sf::Color(0, 0, 0, 200));
+    window.draw(overlay);
+    if (mapInventoryText) window.draw(*mapInventoryText);
+    window.setView(camera);
   }
 
   if (inBattle) {
+    window.setView(window.getDefaultView());
     battleUI.render(window);
+    window.setView(camera);
   }
 
   window.display();

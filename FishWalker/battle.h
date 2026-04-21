@@ -17,6 +17,7 @@ class Battle {
   Hero& getHero();
   Monster& getMonster();
   void heroAttack();
+  void heroAttackWithMultiplier(int multiplier);
   bool isHeroAlive() const;
   Monster* getMonsterPtr() const;
 

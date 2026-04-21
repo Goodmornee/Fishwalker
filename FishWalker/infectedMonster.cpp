@@ -9,8 +9,12 @@ InfectedMonster::InfectedMonster(const std::string& name, int id, int hp,
 InfectedMonster::~InfectedMonster() {}
 
 void InfectedMonster::attack(Character& target) {
+  if (!target.isAlive()) return;
   target.takeDamage(getAtk());
-  target.takeInfection(infectionPower);
+  // Заражение накладывается только если цель ещё жива после урона
+  if (target.isAlive()) {
+    target.takeInfection(infectionPower);
+  }
 }
 
 void InfectedMonster::update() {}
